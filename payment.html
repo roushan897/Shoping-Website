@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gatway</title>
+    <style>
+        h1{
+            text-align: center;
+            background-color: teal;
+        }
+       
+        #form{
+           margin: 0 auto;
+           margin-top: 100px;
+           width: 40%;
+           background-color: antiquewhite;
+           box-shadow: rgba(49, 94, 139, 0.2) 0px 8px 24px;
+           padding: 30px;
+            
+        }
+        input{
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+        input[type="submit"] {
+            background-color: #57af8f;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 20px;
+        }
+        input[type="submit"]:hover{
+            background-color: rgb(53, 112, 53);
+        }
+        p{
+            text-align: center;
+            background-color: brown;
+            color: white;
+            font-size: 25px;
+        }
+
+        @media all and (min-width: 401px) and (max-width: 720px){
+            #form{
+                width: 70%;
+            }
+        }
+    
+        @media all and (min-width: 80px) and (max-width: 400px){
+            #form{
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <p>Payment Gatway</p>
+    <div id="container">
+
+        <form id="form" action="">
+            <input id="cardnum" type="number" placeholder="enter card number">
+ 
+            <input id="number" type="password" placeholder="mobile ccv">
+ 
+            <input id="date" type="date" placeholder="enter expiry date">
+ 
+            <input type="submit">
+        </form>
+ 
+     </div>
+</body>
+<script>
+    document.querySelector("form").addEventListener("submit",otpfun);
+    
+    var payArr=JSON.parse(localStorage.getItem("cardDetails")) || [];
+    function otpfun(){
+        event.preventDefault();
+        
+        var di= document.createElement("div");
+
+        var obj={
+            cardnum : document.querySelector("#cardnum").value,
+            ccv : document.querySelector("#number").value,
+            date : document.querySelector("#date").value
+        }
+        payArr.push(obj)
+        // console.log(payArr)
+        localStorage.setItem("cardDetails",JSON.stringify(payArr))
+        console.log(payArr)
+        window.location.href="otp.html"
+    }
+</script>
+</html>

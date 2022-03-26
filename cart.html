@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        
+        
+        #contai{
+            display: flex;
+            justify-content: space-between;           
+            background-color: gray;
+        }
+        #ptag{            
+            background-color: antiquewhite;
+            padding: 20px;
+            border-radius: 5px 25px;
+        }
+        #chekoutbtn{
+            margin: 35px;
+            border: none;
+            height: 30px;
+            /* padding: 10px 20px; */
+            background-color: orange;
+            
+        }
+        a{
+            text-decoration: none;
+        }
+        #promo{
+            margin-top: 35px;
+            height: 20px;
+            padding: 6px;
+            border-radius: 5px;
+            border: none;
+        }
+        #pcode{
+            text-align: center;
+        }
+
+
+
+        #title{
+           text-align: center;
+           background-color: teal;
+       }
+       #container{
+           display: grid;
+           grid-template-columns: repeat(4,1fr);
+           gap: 20px;
+           margin: 5px;
+       }
+       #container>div{
+           /* border: 1px solid red; */
+           text-align: center;
+           box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+           padding: 15px;
+           box-sizing: border-box;
+       }
+       #container>div:hover{
+           background-color: teal;
+       }
+       button{
+           border: none;
+           border-radius: 5px;
+           background-color: red;
+           font-size: 20px;
+           color: white;
+           padding: 5px 15px;
+           /* margin-bottom: 10px; */
+       }
+       button:hover{
+           background-color: blue;
+           cursor: pointer;
+       }
+       #navbar {
+        display: flex;
+        justify-content: space-around;
+        background-color: teal;
+        padding: 10px;
+      }
+
+      a {
+        text-decoration: none;
+      }
+      #navbar a:hover {
+        color: white;
+      }
+      #navbar a {
+        cursor: pointer;
+      }
+      @media all and (min-width: 401px) and (max-width: 720px){
+        #container{
+          grid-template-columns: repeat(2,1fr);
+        }
+      }
+        
+      @media all and (min-width: 80px) and (max-width: 400px){
+        #container{
+          grid-template-columns: repeat(1,1fr);
+        }
+     }
+    </style>
+</head>
+<body>
+    <div id="contai">
+        <p id="ptag"></p>
+        <div id="pcode">
+            <input id="promo" type="text" placeholder="Apply promocode here">
+        <button onclick="apply()">Apply</button>
+        </div>
+        <button id="chekoutbtn"><a href="payment.html" target="blank">>>Checkout</a></button>
+    </div>
+    <div id="container"></div>
+</body>
+<script>
+    var cartData = JSON.parse(localStorage.getItem("cart"));
+
+    cartData.map(function(elem,index){
+        var box = document.createElement("div");
+
+    var img = document.createElement("img");
+    img.src = elem.image_url;
+
+    var name = document.createElement("p");
+    name.textContent = elem.name;
+
+    var price = document.createElement("p");
+    price.innerText = elem.price;
+
+    var btn = document.createElement("button");
+    btn.innerText = "Remove";
+    btn.addEventListener("click", function () {
+      removeItem(elem, index);
+    });
+
+    box.append(img, name, price, btn);
+
+    document.querySelector("#container").append(box);
+    });
+
+// adding some functionality like remmoving item and counting 
+    function removeItem(elem, index) {
+    // console.log(elem, index);
+    cartData.splice(index, 1);
+    // console.log(cartData);
+    localStorage.setItem("cart", JSON.stringify(cartData));
+    window.location.reload();
+    }
+
+
+    // console.log(cartData)
+    var length = cartData.length;
+    // console.log(length)
+    var total = cartData.reduce(function (sum, elem, index, arr) {
+    return sum + Number(elem.price);
+    }, 0);
+
+    console.log(total)
+    document.querySelector("p").innerText= `You have ${length} item in cart and total prize is Rs ${total}`
+
+    //promocode code is here
+    
+    function apply(){      
+        var promo = document.querySelector("#promo").value;
+       if(promo=="masai30"){
+            var total = cartData.reduce(function (sum, elem, index, arr){
+            return sum + Number(elem.price);
+            },0);
+           var discountedPrice = total-total*30/100;
+           document.querySelector("p").innerText= `You have ${length} item in cart and total prize is Rs ${discountedPrice}`;
+        //    console.log(discountedPrice)
+
+           alert("discount of 30%")
+       }else{
+           alert("invalid promo!")
+       }
+    }
+</script>
+</html>
